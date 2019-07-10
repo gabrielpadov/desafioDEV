@@ -9,8 +9,8 @@ import { NavLink } from 'react-router-dom'
 const Header = () => (
   <Row>  
     <Navbar className="grey darken-2"><div className="brand-logo center brand-logo">SGT</div>
-      <li><NavLink to="/">Home</NavLink></li>
-      <li><NavLink to="task">Task</NavLink></li>
+      <li><NavLink to="home">Home</NavLink></li>
+      <li><NavLink to="">Task</NavLink></li>
     </Navbar>
   </Row>
 );

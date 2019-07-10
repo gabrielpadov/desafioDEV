@@ -1,80 +1,45 @@
 import React, { Component } from 'react';
+import {RadioGroup} from 'react-materialize';
 
 export default class AddTask extends Component {
-  constructor(props) {
-    super(props);
-    this.onChangePersonName = this.onChangePersonName.bind(this);
-    this.onChangeBusinessName = this.onChangeBusinessName.bind(this);
-    this.onChangeGstNumber = this.onChangeGstNumber.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+  
+  //var event = new Date('August 19, 1975 23:15:30 UTC');
 
-    this.state = {
-        person_name: '',
-        business_name: '',
-        business_gst_number:''
-    }
-}
-onChangePersonName(e) {
-  this.setState({
-    person_name: e.target.value
-  });
-}
-onChangeBusinessName(e) {
-  this.setState({
-    business_name: e.target.value
-  })  
-}
-onChangeGstNumber(e) {
-  this.setState({
-    business_gst_number: e.target.value
-  })
+// var jsonDate = event.toJSON()
+
+  state = {
+    name: '',
+    description: '',
+    level: '',
+    status: '',
+    date_start: ''
+
 }
 
-onSubmit(e) {
-  e.preventDefault();
-  console.log(`The values are ${this.state.person_name}, ${this.state.business_name}, and ${this.state.business_gst_number}`)
-  this.setState({
-    person_name: '',
-    business_name: '',
-    business_gst_number: ''
-  })
+handleFormSubmit( event ) {
+    event.preventDefault();
+    console.log(this.state);
 }
 
-render() {
+render(){
     return (
-        <div style={{ marginTop: 10 }}>
-            <h3>Add New Business</h3>
-            <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                    <label>Person Name:  </label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      value={this.state.person_name}
-                      onChange={this.onChangePersonName}
-                      />
-                </div>
-                <div className="form-group">
-                    <label>Business Name: </label>
-                    <input type="text" 
-                      className="form-control"
-                      value={this.state.business_name}
-                      onChange={this.onChangeBusinessName}
-                      />
-                </div>
-                <div className="form-group">
-                    <label>GST Number: </label>
-                    <input type="text" 
-                      className="form-control"
-                      value={this.state.business_gst_number}
-                      onChange={this.onChangeGstNumber}
-                      />
-                </div>
-                <div className="form-group">
-                    <input type="submit" value="Register Business" className="btn btn-primary"/>
-                </div>
-            </form>
-        </div>
-    )
+    
+    <form>
+        <label>Name</label>
+        <input type="text" name="name" value={this.state.name}
+            onChange={e => this.setState({ name: e.target.value })}/>
+
+        <label>Description</label>
+        <input type="text" name="email" value={this.state.email}
+            onChange={e => this.setState({ email: e.target.value })}/>
+
+        <label>Country</label>
+            <RadioGroup  name="level"  label="T-Shirt Size"  
+            options={[{label: 'Priority',value: 'red'},{label: 'Emergency',value: 'yellow'},{label: 'Non-emergency',value: 'green'}]}
+            value={this.state.country} onChange={e => this.setState({ country: e.target.value })}/>
+
+        <input type="submit" onClick={e => this.handleFormSubmit(e)} value="Create Contact" />
+    </form>);
 }
+
 }
