@@ -6,6 +6,7 @@ import com.desafiodev.springmavenmysql.model.Task;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class TaskController {
      * @return
      */
     @GetMapping
+    @CrossOrigin(origins = "http://localhost:3000")
     public List findAll(){
         return repository.findAll();
     }
@@ -41,6 +43,7 @@ public class TaskController {
      * @return
      */
     @GetMapping(path = {"/{id}"})
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity findById(@PathVariable long id){
         return repository.findById(id)
            .map(record -> ResponseEntity.ok().body(record))
@@ -53,6 +56,7 @@ public class TaskController {
      * @return
      */
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:3000")
     public Task create(@RequestBody Task task){
         return repository.save(task);
     }
@@ -64,6 +68,7 @@ public class TaskController {
      * @return
      */
     @PutMapping(value="/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody Task task) {
         return repository.findById(id)
             .map(record -> {
@@ -78,6 +83,7 @@ public class TaskController {
      * Removendo uma pelo ID (DELETE /tasks/{id})
      */
     @DeleteMapping(path ={"/{id}"})
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> delete(@PathVariable long id) {
     return repository.findById(id)
             .map(record -> {

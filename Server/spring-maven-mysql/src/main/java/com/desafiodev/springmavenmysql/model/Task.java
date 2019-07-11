@@ -17,5 +17,12 @@ public class Task {
    private Long id;
    private String name;
    private String description;
+   private String level;
+   private String status;
+   private String details;
+   private String locate;
+   private String date_start;
+   private String date_end;
+   private String image; 
    
 }
