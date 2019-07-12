@@ -9,11 +9,12 @@ export default class AddTask extends Component {
             this.onChangeDescription = this.onChangeDescription.bind(this);
             this.onChangeLevel = this.onChangeLevel.bind(this);
             this.onSubmit = this.onSubmit.bind(this);
+            this.onSubmitAdd = this.onSubmitAdd.bind(this);
                         
             this.state = {
                 name: '',
                 description: '',
-                level: '',
+                level: 'green',
                 date_start: new Date().toDateString(),
                 status: 'Active'
                 
@@ -29,14 +30,21 @@ export default class AddTask extends Component {
             description: e.target.value
           })  
         }
-        onChangeLevel(e) {
+        onChangeLevel(e,_String) {
+          console.log(_String);
+
           this.setState({
-           level: e.target.value
+           level: _String
           })
         }
-      
+
+      onSubmitAdd(e){
+        e.preventDefault();
+        this.props.onAddTaskRefreshList();
+      }
         onSubmit(e) {
           e.preventDefault();
+          
          const obj = {
             name: this.state.name,
             description: this.state.description,
@@ -49,10 +57,11 @@ export default class AddTask extends Component {
       axios.post('http://localhost:8080/tasks', obj)
         .then(function (response) {
           //handle success
-            console.log(response.date)
+            console.log(response.status)
         }).catch(error => {
             console.log(error) 
         });      
+        this.onSubmitAdd(e);
           
           this.setState({
             name: '',
@@ -88,75 +97,47 @@ return (
             <div>
                 <label>Level: </label>
                 <ul>
-
-        <li >
-          
-            <input
-           
-              label="Small"  
-              type="radio"
-              value="red"
-              checked={this.state.level === "red"}
-              onChange={this.onChangeLevel }
-          
-            />
-            <label>
-            Small
-          </label>
-        </li>
-        
-        <li >
-          
-            <input
-            className="form-control"
-              type="radio"
-              value="yellow"
-              checked={this.state.level === "yellow" }
-              onChange={this.onChangeLevel}
-             
-            />
-            <label>
-            Medium
-          </label>
-        </li>
-
-        <li >
-          
-            <input
-            className="form-control"
-              type="radio"
-              value="green"
-              checked={this.state.level === "green" }
-              onChange={this.onChangeLevel}
-             
-            />
-            <label>
-            Large
-          </label>
-        </li>
-      </ul>
-       </div>
+                  <li >
+                      <input
+                        label="Small"  
+                        type="radio"
+                        value="red"
+                        checked={this.state.level === "red"}
+                      />
+                      <label onClick={(e)=>this.onChangeLevel(e,"red")}>
+                      Priority
+                    </label>
+                  </li>   
+                  <li >
+                      <input
+                      className="form-control"
+                        type="radio"
+                        value="yellow"
+                        checked={this.state.level === "yellow" }          
+                      />
+                      <label onClick={(e)=>this.onChangeLevel(e,"yellow")}>
+                      Emergency
+                    </label>
+                  </li>
+                  <li >
+                      <input
+                      className="form-control"
+                        type="radio"
+                        value="green"
+                        checked={this.state.level === "green" }                    
+                      />
+                      <label onClick={(e)=>this.onChangeLevel(e,"green")}>
+                      Non-Emergency
+                    </label>
+                  </li>
+                </ul>
+            </div>
             
             <div style={{marginTop: '5px'}} className="form-group">
-                <input type="submit" value="Submit" className="btn btn-primary" />
+                <input type="submit" value="Submit" className="btn btn-primary"  />
             </div>
         </form>
     </div>
             )
         }
     }
-
-
-/*    initialRegistration:"26/07/2014"
-
-movies.sort(function(a, b) {
-    var dateA = new Date(a.release), dateB = new Date(b.release);
-    return dateA - dateB;
-});
-
-
-let sortedCars1 = cars.sort((a, b) => new Date(a.initialRegistration.split('/').reverse()) - new Date(...b.initialRegistration.split('/').reverse()));
-sortedCars1 = cars.sort((a, b) =>
-  a.initialRegistration.split('/').reverse().join().localeCompare(b.initialRegistration.split('/').reverse().join())); 
-    let sortedCars = cars.sort((a, b) => Date.parse(new Date(a.initialRegistration.split("/").reverse().join("-"))) - Date.parse(new Date(b.initialRegistration.split("/").reverse().join("-"))));
-*/

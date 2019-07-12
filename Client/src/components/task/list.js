@@ -10,6 +10,8 @@ class List extends Component {
     this.onDelete = this.onDelete.bind(this);
     this.onReject = this.onReject.bind(this);
     this.onDone = this.onDone.bind(this);
+    //this.onRefreshCollapsibleItem = this.onRefreshCollapsibleItem.bind(this);
+    this.onRejectRefresh = this.onRejectRefresh.bind(this);
   }
 
 /**
@@ -36,6 +38,21 @@ onStatusButton(status){
 return false;
 }
 
+onDoneRefresh(e){
+  e.preventDefault();
+  this.props.onDoneRefreshList(e);
+}
+
+onRejectRefresh(e){
+  e.preventDefault();
+  this.props.onRejectRefreshList(e);
+}
+
+onDeleteRefresh(e){
+  e.preventDefault();
+  this.props.onDeleteRefreshList(e);
+}
+
 onDelete(id,e) {
   e.preventDefault();
   const httpReqHeaders = {
@@ -46,10 +63,11 @@ onDelete(id,e) {
   axios.delete(url, httpReqHeaders )
        .then(function (response) {
           //handle success
-            console.log(response.date)
+            console.log(response.status)
         }).catch(error => {
             console.log(error) 
         });       
+        this.onDeleteRefresh(e);
 }
 
 onReject(task,e) {
@@ -75,10 +93,13 @@ onReject(task,e) {
   axios.put(url, data, httpReqHeaders )
        .then(function (response) {
           //handle success
-            console.log(response.date)
+            console.log(response.status)
+            
         }).catch(error => {
             console.log(error) 
-        });          
+        }); 
+        console.log('reject')
+        this.onRejectRefresh(e);    
 }
 
 onDone(task,e) {
@@ -86,7 +107,7 @@ onDone(task,e) {
   const httpReqHeaders = {
     'Access-Control-Allow-Origin': '*'
   };
-  console.log(task.id);
+  // console.log(task.id);
   const data = { 
     name: task.name,
     description: task.name,
@@ -104,28 +125,24 @@ onDone(task,e) {
        .then(function (response) {
           //handle success
             console.log(response.date)
+           
         }).catch(error => {
             console.log(error) 
         });       
+        this.onDoneRefresh(e); 
 }
 
      render() {
        return (
         <div>
-        <label>What needs to be done?</label>
-        <input type="text" label="Task" id="fname"  />
-        <h4>To Do</h4>
-        <div className="center">
-          <Button waves="light" node="a" style={{margin: '2px'}}>Recents</Button>
-          <Button waves="light" node="a" style={{margin: '2px'}}>Actives</Button>
-          <Button waves="light" node="a" style={{margin: '2px'}}>Done</Button>
-        </div>
-        <Collapsible>
+        
+        <Collapsible accordion={true}>
           
-        {this.props.tasks.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start)).reverse().map((task) => {
+        {this.props.tasks.map((task) => {
               return (
               // eslint-disable-next-line no-unused-expressions
-              <CollapsibleItem key={task.id} header={task.name} icon="notification_important" iconClassName={task.level}>   
+              <CollapsibleItem key={task.id} header={task.name} icon="notification_important" iconClassName={task.level} 
+                >   
               <Row>
               <Col m={12} s={12}>
     
@@ -138,7 +155,6 @@ onDone(task,e) {
                 <Col m={2} s={2}>
                   <Chip className={this.onStatus(task.status)}>{task.status}</Chip>
                 </Col>
-    
                 
               <div className="center">
                 <img style={{marginBottom: '20px'}} src={this.onImage(task.image)} alt="description of image"/>
