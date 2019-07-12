@@ -45,12 +45,12 @@ render() {
   return (
   <Row>
      <Col m={12} s={12}>
-    <Button waves="light" style={{marginRight: '5px'}} href="#addTask" className="blue modal-trigger">
+    <Button waves="light" href="#addTask" className="blue modal-trigger">
       Task
       <Icon medium left>add_circle</Icon>
     </Button>
 
-    <Modal id="addTask" header="Task" onFocus={this.componentDidMount()}>
+    <Modal id="addTask" header="Task" >
     
     <AddTask /> 
         
@@ -58,17 +58,16 @@ render() {
     </Col>
 
     <Col m={5} s={12} style={{marginTop: ''}}>
-     <hr></hr>
-      <div>
-        <Chip className="red">Priority</Chip>
-        <Chip className="yellow">Emergency</Chip>
-        <Chip className="green">Non-emergency</Chip>
+     <br />
+      <div className="center">
+        <Chip className="white-text red">Priority</Chip>
+        <Chip className="white-text yellow">Emergency</Chip>
+        <Chip className="white-text green">Non-emergency</Chip>
        </div>
     </Col>
   
       <Col m={7} s={12}>
-      <List tasks={this.state.tasks}/>
-        
+        <List tasks={this.state.tasks}/>  
     </Col>
    
   </Row>

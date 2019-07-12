@@ -32,7 +32,7 @@ public class TaskController {
      * @return
      */
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     public List findAll(){
         return repository.findAll();
     }
@@ -43,7 +43,7 @@ public class TaskController {
      * @return
      */
     @GetMapping(path = {"/{id}"})
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     public ResponseEntity findById(@PathVariable long id){
         return repository.findById(id)
            .map(record -> ResponseEntity.ok().body(record))
@@ -56,7 +56,7 @@ public class TaskController {
      * @return
      */
     @PostMapping
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     public Task create(@RequestBody Task task){
         return repository.save(task);
     }
@@ -68,12 +68,20 @@ public class TaskController {
      * @return
      */
     @PutMapping(value="/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody Task task) {
         return repository.findById(id)
             .map(record -> {
                 record.setName(task.getName());
                 record.setDescription(task.getDescription());
+                record.setLevel(task.getLevel());
+                record.setStatus(task.getStatus());
+                record.setDetails(task.getDetails());
+                record.setLocate(task.getLocate());
+                record.setDate_start(task.getDate_start());
+                record.setDate_end(task.getDate_end());
+                record.setImage(task.getImage());
+   
                 Task updated = repository.save(record);
                 return ResponseEntity.ok().body(updated);
             }).orElse(ResponseEntity.notFound().build());
@@ -83,7 +91,7 @@ public class TaskController {
      * Removendo uma pelo ID (DELETE /tasks/{id})
      */
     @DeleteMapping(path ={"/{id}"})
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     public ResponseEntity<?> delete(@PathVariable long id) {
     return repository.findById(id)
             .map(record -> {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-
 export default class AddTask extends Component {
 
         constructor(props) {
@@ -10,13 +9,14 @@ export default class AddTask extends Component {
             this.onChangeDescription = this.onChangeDescription.bind(this);
             this.onChangeLevel = this.onChangeLevel.bind(this);
             this.onSubmit = this.onSubmit.bind(this);
-      
+                        
             this.state = {
                 name: '',
                 description: '',
                 level: '',
                 date_start: new Date().toDateString(),
                 status: 'Active'
+                
             }
         }
         onChangeName(e) {
@@ -60,6 +60,7 @@ export default class AddTask extends Component {
             level: ''
           })
         }
+          
        
 render() {
 return (
@@ -83,45 +84,79 @@ return (
                     onChange={this.onChangeDescription}
                     />
             </div>
-            <div className="form-group">
+            
+            <div>
                 <label>Level: </label>
-                <input type="text" 
-                    className="form-control"
-                    value={this.state.level}
-                    onChange={this.onChangeLevel}
-                    />
-            </div>
-            <div className="form-group">
-                <input type="submit" value="Submit" className="btn btn-primary"/>
+                <ul>
+
+        <li >
+          
+            <input
+           
+              label="Small"  
+              type="radio"
+              value="red"
+              checked={this.state.level === "red"}
+              onChange={this.onChangeLevel }
+          
+            />
+            <label>
+            Small
+          </label>
+        </li>
+        
+        <li >
+          
+            <input
+            className="form-control"
+              type="radio"
+              value="yellow"
+              checked={this.state.level === "yellow" }
+              onChange={this.onChangeLevel}
+             
+            />
+            <label>
+            Medium
+          </label>
+        </li>
+
+        <li >
+          
+            <input
+            className="form-control"
+              type="radio"
+              value="green"
+              checked={this.state.level === "green" }
+              onChange={this.onChangeLevel}
+             
+            />
+            <label>
+            Large
+          </label>
+        </li>
+      </ul>
+       </div>
+            
+            <div style={{marginTop: '5px'}} className="form-group">
+                <input type="submit" value="Submit" className="btn btn-primary" />
             </div>
         </form>
     </div>
             )
         }
-      }   
-   /* handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
-      
-      let formData = new FormData();
-      formData.append('name', event.name);
-      formData.append('description', event.description);
-      formData.append('level', event.level);
-      formData.append('date_start', new Date().toDateString());
-      formData.append('status', 'Active');
-      
-      axios({
-          method: 'post',
-          url: 'http://localhost:3001/tasks',
-          data: formData,
-          config: { headers: {'Content-Type': 'multipart/form-data' }}
-      }).then(function (response) {
-          //handle success
-          console.log(response)
-      }).catch(function (response) {
-          //handle error
-          console.log(response)
-     })
-  
-      }*/
-    
+    }
+
+
+/*    initialRegistration:"26/07/2014"
+
+movies.sort(function(a, b) {
+    var dateA = new Date(a.release), dateB = new Date(b.release);
+    return dateA - dateB;
+});
+
+
+let sortedCars1 = cars.sort((a, b) => new Date(a.initialRegistration.split('/').reverse()) - new Date(...b.initialRegistration.split('/').reverse()));
+sortedCars1 = cars.sort((a, b) =>
+  a.initialRegistration.split('/').reverse().join().localeCompare(b.initialRegistration.split('/').reverse().join())); 
+    let sortedCars = cars.sort((a, b) => Date.parse(new Date(a.initialRegistration.split("/").reverse().join("-"))) - Date.parse(new Date(b.initialRegistration.split("/").reverse().join("-"))));
+*/
