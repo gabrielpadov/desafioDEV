@@ -8,9 +8,7 @@ import List from './list';
 import axios from 'axios';
 import AddTask from "./addTask";
 
-
 const API_URL = 'http://localhost:8080';
-
 
 class Tasks extends React.Component {
 
@@ -27,9 +25,6 @@ class Tasks extends React.Component {
     this.onActivesTask = this.onActivesTask.bind(this);
     this.onDoneTask = this.onDoneTask.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
-    //this.onAddTaskRefreshListClick = this.onAddTaskRefreshListClick.bind(this);
-   // this.onTaskRefreshListClick = this.onTaskRefreshListClick.bind(this);
-    
   }
 
   async loadTasks() {
@@ -37,14 +32,11 @@ class Tasks extends React.Component {
     
      axios.get(url).then(response => {
       this.setState({ tasks: response.data,
-                      taskList: response.data.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start)) });
-      //console.log(response.data)
-      console.log(response.status)
-
-    }).catch(error => {
-      console.log(error.response) 
-  });
-  
+        taskList: response.data.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start)) });
+          console.log(response.status)
+        }).catch(error => {
+          console.log(error.response) 
+    });
   }
   
   componentDidMount() {
@@ -88,7 +80,8 @@ class Tasks extends React.Component {
       })
   }
 
-  onAddTaskRefreshListClick(){
+  onAddTaskRefreshListClick(e){
+    e.preventDefault();
     this.loadTasks();
   }
 
@@ -106,7 +99,6 @@ class Tasks extends React.Component {
     e.preventDefault();
     this.onDoneTask(e)
   } 
-
 
 render() {
   return (
@@ -148,9 +140,8 @@ render() {
             onDoneRefreshList={this.onDoneRefreshListClick.bind(this)} 
             onRejectRefreshList={this.onRejectRefreshListClick.bind(this)} />  
     </Col>
-   
   </Row>
-);
-    }
+    );
   }
+}
 export default Tasks;

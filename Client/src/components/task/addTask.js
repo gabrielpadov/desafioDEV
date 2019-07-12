@@ -40,7 +40,7 @@ export default class AddTask extends Component {
 
       onSubmitAdd(e){
         e.preventDefault();
-        this.props.onAddTaskRefreshList();
+        this.props.onAddTaskRefreshList(e);
       }
         onSubmit(e) {
           e.preventDefault();
