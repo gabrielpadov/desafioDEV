@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, View, FlatList, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Card, View, FlatList, StyleSheet, Text } from 'react-native';
 
 export default class TaskList extends Component {
 
@@ -11,11 +11,12 @@ export default class TaskList extends Component {
   }
 
   componentDidMount(){
-    const host = '127.0.0.1:8080/tasks';
+    const host = 'http://192.168.0.2:8080/tasks';
     return fetch(host)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson)
+console.log(responseJson.tasks)
         this.setState({
           isLoading: false,
           dataSource: responseJson,
