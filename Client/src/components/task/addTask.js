@@ -15,7 +15,7 @@ export default class AddTask extends Component {
                 name: '',
                 description: '',
                 level: 'green',
-                date_start: new Date().toDateString(),
+                date_start: new Date(),
                 status: 'Active'
                 
             }

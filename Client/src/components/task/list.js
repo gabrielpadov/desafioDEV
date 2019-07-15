@@ -24,11 +24,25 @@ onStatus(status) {
   return 'blue';
 }
 
+onLineThrough(status) {
+  if(status==='Done'){
+    return 'line-through';
+  }
+  return 'none';
+}
+
 onImage(image) {
   if(image == null){
     return noimage;
   }
   return image;
+}
+
+onDateFormat(date){
+  if(date == null){
+    return null;
+  }
+  return date;
 }
 
 onStatusButton(status){
@@ -75,7 +89,7 @@ onReject(task,e) {
   const httpReqHeaders = {
     'Access-Control-Allow-Origin': '*'
   };
-  console.log(task.id);
+ // console.log(task.id);
   const data = { 
     name: task.name,
     description: task.name,
@@ -86,7 +100,6 @@ onReject(task,e) {
     date_end: null,
     image: null,
     locate: null
-    
   }
   
   const url = 'http://localhost:8080/tasks/' + task.id;
@@ -116,7 +129,7 @@ onDone(task,e) {
     image: task.image,
     locate: task.locate,
     date_start: task.date_start,
-    date_end: new Date().toDateString(),
+    date_end: new Date(),
     status: 'Done'
   }
   
@@ -141,14 +154,15 @@ onDone(task,e) {
         {this.props.tasks.map((task) => {
               return (
               // eslint-disable-next-line no-unused-expressions
-              <CollapsibleItem key={task.id} header={task.name} icon="notification_important" iconClassName={task.level} 
+              <CollapsibleItem key={task.id} header={task.date_start +': '+ task.name} style={{'text-decoration': this.onLineThrough(task.status)}}
+              icon="notification_important" iconClassName={task.level} 
                 >   
               <Row>
               <Col m={12} s={12}>
     
                 <Col m={10} s={10}>
-                  <label className="title">Begin: </label><span> {task.date_start}</span><br />
-                  <label className="title">End: </label><span>{task.date_end}</span><br />
+                  <label className="title">Begin: </label><span> {this.onDateFormat(task.date_start)}</span><br />
+                  <label className="title">End: </label><span>{this.onDateFormat(task.date_end)}</span><br />
                   <label className="title">Description: </label><span>{task.description}</span>
                 </Col>
                 
@@ -157,7 +171,7 @@ onDone(task,e) {
                 </Col>
                 
               <div className="center">
-                <img style={{marginBottom: '20px'}} src={this.onImage(task.image)} alt="description of image"/>
+                <img style={{marginBottom: '20px'}} src={this.onImage(task.image)} className="img-responsive" alt={task.name}/>
                     <br/>
                 
                 <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onReject(task,e)} >Reject</Button>

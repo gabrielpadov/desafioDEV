@@ -11,12 +11,12 @@ export default class TaskList extends Component {
   }
 
   componentDidMount(){
-    const host = 'http://192.168.0.2:8080/tasks';
+    //const host = 'http://192.168.0.2:8080/tasks';
+    const host = 'http://200.131.36.177:8080/tasks';
     return fetch(host)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson)
-console.log(responseJson.tasks)
         this.setState({
           isLoading: false,
           dataSource: responseJson,
@@ -47,9 +47,11 @@ console.log(responseJson.tasks)
         <FlatList
           data={this.state.dataSource}
           renderItem={({item}) => <Text>{item.name}, {item.description}</Text>}
-          keyExtractor={({id}, index) => id}
+          keyExtractor = {(item, index) => index.toString ()}
         />
+        
       </View>
+      
     );
   }
 }

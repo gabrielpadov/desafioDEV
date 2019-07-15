@@ -1,0 +1,21 @@
+{
+  "name": "server-upload",
+  "version": "1.0.0",
+  "description": "servidor de upload de arquivos para formato multipart",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "reactjs",
+    "node"
+  ],
+  "author": "Gabriel Padovani",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "formidable": "^1.2.1"
+  }
+}

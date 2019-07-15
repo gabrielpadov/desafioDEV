@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 11, 2019 at 10:18 PM
+-- Generation Time: Jul 15, 2019 at 07:01 PM
 -- Server version: 5.7.26-0ubuntu0.16.04.1
 -- PHP Version: 7.0.33-0ubuntu0.16.04.5
 
@@ -34,8 +34,8 @@ CREATE TABLE `task` (
   `status` varchar(50) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
   `locate` varchar(255) DEFAULT NULL,
-  `date_start` varchar(255) DEFAULT NULL,
-  `date_end` varchar(255) DEFAULT NULL,
+  `date_start` date DEFAULT NULL,
+  `date_end` date DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -44,28 +44,9 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`id`, `name`, `description`, `level`, `status`, `details`, `locate`, `date_start`, `date_end`, `image`) VALUES
-(19, 'a', 'a', 'a', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(21, '20', 's', 'red', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(23, 'ddddd', 'ddddd', 'd', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(27, 'Teste', 'Teste', 'red', 'Active', NULL, NULL, '28-02-2018', NULL, NULL),
-(28, 'teste', 'teste', 'green', 'Done', NULL, 'ddddddddddddd', '28-02-2019', 'Thu Jul 11 2019', 'ddddddddddddddddddddd'),
-(29, 'a', 'a', 'green', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(31, 'aa', 'aaaaaaaaaaaa', 'green', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(32, '', '', 'green', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(33, 'aaaaaaaaa', 'aaaa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(34, 'aaaaaaaaaa', 'aaaaaaaaaaaa', 'green', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(35, 'aaaaaaaaaaaaa', 'aaaaaaa', 'green', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(37, 'gdgdgd', 'gdgdgdgd', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(38, 'aaa', 'aa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(41, 'aaa', 'aaaa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(42, 'a', 'aa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(43, 'aaa', 'aaa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(45, 'aaa', 'aaaaaaaaaaa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(46, 'aaaaaaaa', 'aaaaaaaaaaaaaaa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(47, 'aa', 'aaaaa', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(48, '', '', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(49, '', '', '', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL),
-(50, 'aaaa', 'aaa', 'green', 'Active', NULL, NULL, 'Thu Jul 11 2019', NULL, NULL);
+(1, 'Entrega Strider', 'Desafio parte 1', 'red', 'Active', NULL, NULL, '2019-07-15', NULL, NULL),
+(2, 'Lavar as roupas', 'Usar omo e amaciante', 'yellow', 'Active', NULL, NULL, '2019-07-15', NULL, NULL),
+(3, 'LAvar o carro', 'LAvar o carro', 'green', 'Done', NULL, NULL, '2019-07-14', '2019-07-15', NULL);
 
 --
 -- Indexes for dumped tables
@@ -86,7 +67,7 @@ ALTER TABLE `task`
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

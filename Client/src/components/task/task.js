@@ -50,12 +50,14 @@ class Tasks extends React.Component {
 
   onOldsTask(e){
     e.preventDefault();
+    this.loadTasks();
     this.setState({
       taskList : this.state.tasks.sort((a,b)=> new Date(a.date_start) - new Date(b.date_start))
     })
   }
   onDoneTask(e){
     e.preventDefault();
+    this.loadTasks();
     this.setState({
       taskList : this.state.tasks.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start))
       .filter(task => task.status.toLowerCase() === "done")})
@@ -63,6 +65,7 @@ class Tasks extends React.Component {
 
   onActivesTask(e){
     e.preventDefault();
+    this.loadTasks();
     this.setState({
       taskList : this.state.tasks.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start))
       .filter(task => task.status.toLowerCase() === "active")
@@ -116,12 +119,12 @@ render() {
     </Modal>
     </Col>
 
-    <Col m={5} s={12} style={{marginTop: ''}}>
+    <Col m={5} s={12} style={{marginTop: '5px'}}>
      <br />
       <div className="center">
-        <Chip className="white-text red">Priority</Chip>
-        <Chip className="white-text yellow">Emergency</Chip>
-        <Chip className="white-text green">Non-emergency</Chip>
+        <Chip className="grey-darken-2-text red">Priority</Chip>
+        <Chip className="grey-darken-2-text yellow">Emergency</Chip>
+        <Chip className="grey-darken-2-text green">Non-emergency</Chip>
        </div>
     </Col>
   

@@ -1,5 +1,7 @@
 package com.desafiodev.springmavenmysql.model;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,8 +23,8 @@ public class Task {
    private String status;
    private String details;
    private String locate;
-   private String date_start;
-   private String date_end;
+   private Date date_start;
+   private Date date_end;
    private String image; 
    
 }

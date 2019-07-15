@@ -4,7 +4,6 @@ import {
   View, 
   Text
 } from 'react-native';
-import Geocoder from 'react-native-geocoder'; // 0.5.0
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 
@@ -17,9 +16,11 @@ export default class TesteGeocoder extends Component {
       longitude: null,
       place: 'Localizando endereço...',
       error: null,
+      locationResult: null,
+      hasLocationPermissions: false
     };
   }
-
+/*
  componentDidMount() {
 Permissions.askAsync(Permissions.LOCATION);
     navigator.geolocation.getCurrentPosition(
@@ -32,20 +33,35 @@ Permissions.askAsync(Permissions.LOCATION);
 console.log(position);
 
      Location.reverseGeocodeAsync(position.coords).then(res => {
-      this.setState({ place: res[0].toString() });console.log(res[0]);
+      this.setState({ place: res[0] });
+      console.log(res[0]);
     });
-   });     /* Geocoder.geocodePosition({ lat: this.state.latitude, lng: this.state.longitude })
-          .then(res => {
-              this.setState({
-                  place: res[0].formatedAddress
-              });console.log(res);
-          });
-      },
-      (error) => this.setState({ error: error.message }),
-	
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );*/
+   });    
+  }*/
+  componentDidMount() {
+    this._getLocationAsync();
+  }
 
+
+  _getLocationAsync = async () => {
+   let { status } = await Permissions.askAsync(Permissions.LOCATION);
+   if (status !== 'granted') {
+     this.setState({
+       locationResult: 'Permission to access location was denied',
+     });
+   } else {
+     this.setState({ hasLocationPermissions: true });
+   }
+
+   let location = await Location.getCurrentPositionAsync({});
+   this.setState({ locationResult: JSON.stringify(location.coords),
+    latitude: location.coords.latitude, longitude: location.coords.longitude });
+   console.log(location);
+   console.log(this.state.locationResult);
+
+  let address = await Location.reverseGeocodeAsync(location.coords);
+  console.log(address);
+  this.setState({place: JSON.stringify(address)});
   }
 
   render() {
