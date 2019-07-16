@@ -53,7 +53,7 @@ export default class CameraPage extends React.Component {
         try {
             console.log(this.state.hasCameraPermission);
           if (this.state.hasCameraPermission  === true) {
-            await CameraRoll.saveToCameraRoll(this.state.captures.uri);
+          
           } else {
             console.log("Permissao de camera negada.");
           }
@@ -65,6 +65,17 @@ export default class CameraPage extends React.Component {
        // funcao fechar a camera
       }
       /*
+
+	const image = new FormData();
+	
+	image.append({
+		uri: image.uri,
+		type: 'image/jpeg',
+		name: `${}_$index.jpg`
+	});
+	await api.post(
+
+
       async uploadFiles() {
         this.setState({ uploadProgress: {}, uploading: true });
         const promises = [];

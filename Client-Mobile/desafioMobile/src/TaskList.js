@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Card, View, FlatList, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Modal, Card, View, FlatList, StyleSheet, Text } from 'react-native';
 
 export default class TaskList extends Component {
 
@@ -48,7 +48,14 @@ export default class TaskList extends Component {
           data={this.state.dataSource}
           renderItem={({item}) => <Text>{item.name}, {item.description}</Text>}
           keyExtractor = {(item, index) => index.toString ()}
-        />
+        
+<Modal
+animationType="slide"
+transparent={true}
+visible={this.state.modalVisible}
+onRequestClose={this.closeModal} // Used to handle the Android Back Button
+>
+/>
         
       </View>
       
