@@ -92,7 +92,7 @@ onReject(task,e) {
  // console.log(task.id);
   const data = { 
     name: task.name,
-    description: task.name,
+    description: task.description,
     level: task.level,
     details: null,
     status: task.status,  
@@ -123,7 +123,7 @@ onDone(task,e) {
   // console.log(task.id);
   const data = { 
     name: task.name,
-    description: task.name,
+    description: task.description,
     level: task.level,
     details: null,
     image: task.image,
