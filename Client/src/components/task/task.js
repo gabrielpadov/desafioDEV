@@ -50,14 +50,12 @@ class Tasks extends React.Component {
 
   onOldsTask(e){
     e.preventDefault();
-    this.loadTasks();
     this.setState({
       taskList : this.state.tasks.sort((a,b)=> new Date(a.date_start) - new Date(b.date_start))
     })
   }
   onDoneTask(e){
     e.preventDefault();
-    this.loadTasks();
     this.setState({
       taskList : this.state.tasks.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start))
       .filter(task => task.status.toLowerCase() === "done")})
@@ -65,7 +63,6 @@ class Tasks extends React.Component {
 
   onActivesTask(e){
     e.preventDefault();
-    this.loadTasks();
     this.setState({
       taskList : this.state.tasks.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start))
       .filter(task => task.status.toLowerCase() === "active")

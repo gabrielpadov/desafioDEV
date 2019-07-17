@@ -154,7 +154,7 @@ onDone(task,e) {
         {this.props.tasks.map((task) => {
               return (
               // eslint-disable-next-line no-unused-expressions
-              <CollapsibleItem key={task.id} header={task.date_start +': '+ task.name} style={{'text-decoration': this.onLineThrough(task.status)}}
+              <CollapsibleItem key={task.id} header={task.date_start +': '+ task.name} style={{'textDecoration': this.onLineThrough(task.status)}}
               icon="notification_important" iconClassName={task.level} 
                 >   
               <Row>
@@ -163,7 +163,8 @@ onDone(task,e) {
                 <Col m={10} s={10}>
                   <label className="title">Begin: </label><span> {this.onDateFormat(task.date_start)}</span><br />
                   <label className="title">End: </label><span>{this.onDateFormat(task.date_end)}</span><br />
-                  <label className="title">Description: </label><span>{task.description}</span>
+                  <label className="title">Description: </label><span>{task.description}</span><br />
+                  <label className="title">Localization: </label><span>{task.locate}</span>
                 </Col>
                 
                 <Col m={2} s={2}>

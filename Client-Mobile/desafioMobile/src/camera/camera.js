@@ -7,6 +7,7 @@ import Gallery from './gallery.component';
 import styles from './styles';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+const axios = require('axios');
 
 export default class CameraPage extends React.Component {
   
@@ -15,9 +16,8 @@ export default class CameraPage extends React.Component {
         const cameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         const hasCameraPermission = (camera.status === 'granted' &&
              cameraRoll.status === 'granted');
-             console.log(cameraRoll.status);
-             console.log(camera.status);
-
+            // console.log(cameraRoll.status);
+            // console.log(camera.status);
         this.setState({ hasCameraPermission });
     };
 	camera = null;
@@ -43,17 +43,90 @@ export default class CameraPage extends React.Component {
 
     handleShortCapture = async () => {
         const photoData = await this.camera.takePictureAsync();
-        this.setState({ capturing: false, captures: [photoData, ...this.state.captures] })
-        console.log(this.state.captures);
-        const sub = await this.submitPicture();
-        console.log(sub);
-    };
+        this.setState({ capturing: false, captures: photoData })
+        console.log(photoData);
 
-    submitPicture = async () => {
-        try {
-            console.log(this.state.hasCameraPermission);
+            const formData = new FormData();
+            formData.append("file",photoData.uri);
+           
+            axios.post('http://200.131.36.177:8000/upload', 'file',
+              formData)
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+         /*    var settings = {
+              "url": 'http://200.131.36.177:8000/upload',
+              "method": "POST",
+              "enctype": 'multipart/form-data',
+              "body": formData 
+            }
+            
+            $.ajax(settings).done(function (response) {
+              console.log(response);
+            });
+         
+         var form = new FormData();
+form.append("img", "/home/usuario/Pictures/gramatica.png");
+
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "http://localhost:8000/upload",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "User-Agent": "PostmanRuntime/7.15.0",
+    "Accept": 
+    "Cache-Control": "no-cache",
+    "Postman-Token": "78c78c51-99e6-4514-ab50-5e253fb0de2e,af8c95c5-3624-4925-a2b6-5dddfeaf47f0",
+    "Host": "localhost:8000",
+    "cookie": "JSESSIONID=686BD9947003CE2B1B7974D22AC7CBD5",
+    "accept-encoding": "gzip, deflate",
+    "content-length": "58854",
+    "Connection": "keep-alive",
+    "cache-control": "no-cache"
+  },
+  "processData": false,
+  "contentType": false,
+  "mimeType": "multipart/form-data",
+  "data": form
+  https://pt.stackoverflow.com/questions/264956/como-passo-enctype-multipart-form-data-pelo-post
+https://pt.stackoverflow.com/questions/194455/reactjs-como-executar-chamadas-ajax
+https://github.com/axios/axios/issues/710
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+         fetch({
+            method: 'POST',
+            url: 'http://200.131.36.177:8000/upload',
+            headers: {'Content-Type': 'multipart/form-data'},
+            body: formData,
+            transformRequest: function(data, headersGetterFunction) {
+                return data; // do nothing! FormData is very good!
+            }*/
+        
+    }
+       /*  try {
+           
+           const host = 'http://200.131.36.177:8000/upload'
           if (this.state.hasCameraPermission  === true) {
-          
+           
+            // const formData = new FormData();
+            // formData.append('file', photoData.uri );
+            
+            fetch(host, {
+              method: 'POST',
+              body: formData
+              }),
+            
+            console.log("Começar form data");
+            console.log(formData);
+            
           } else {
             console.log("Permissao de camera negada.");
           }
@@ -61,9 +134,10 @@ export default class CameraPage extends React.Component {
           console.warn(err);
         }
     
-       this.setState({ captures: []});
-       // funcao fechar a camera
-      }
+       //this.setState({ captures: []});
+       // funcao fechar a camera*/
+
+      
       /*
 
 	const image = new FormData();
