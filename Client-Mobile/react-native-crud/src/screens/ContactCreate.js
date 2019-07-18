@@ -10,8 +10,15 @@ export default class ContactCreate extends Component {
   constructor(props) {
     super(props);
     this.item = null;
+	this.photo = null;
+   
     if (props.navigation.state.params && props.navigation.state.params.item) {
       this.item = props.navigation.state.params.item;
+	console.log('1'+this.item);
+    }
+    if (props.navigation.state.params && props.navigation.state.params.photo) {
+      this.photo = props.navigation.state.params.photo;
+	console.log('2'+this.photo);
     }
     this.state = {
       inputName: this.item && this.item.name ? this.item.name : '',
@@ -30,6 +37,10 @@ export default class ContactCreate extends Component {
       hasLocationPermissions: false,
       cameraCapture: false
     }
+	console.log('3'+this.photo);
+	console.log('4'+JSON.stringify(this.item.photo));
+	
+	// this.item.image=this.photo;
   }
 
   componentDidMount() {
@@ -104,7 +115,7 @@ export default class ContactCreate extends Component {
       <Container style={styles.container}>
 
   { !this.state.cameraCapture && <Content>
-        <Icon name="ios-notifications" size={20} style={{ color: this.item.level , margin: 20 }}/>
+        <Icon name="ios-notifications" size={20} style={{ color: this.state.level , margin: 20 }}/>
           <Form>
             <Item>
               <Input disabled placeholder="DataStart" value={this.state.inputDateStart} onChangeText={(value) => this.setState({inputDateStart: value})} />
@@ -120,7 +131,7 @@ export default class ContactCreate extends Component {
             </Item>
             <Item last>
               <Text>Image: </Text> 
-              <Input disabled placeholder="DateImage" type="file" value={this.state.inputImage} onChangeText={(value) => this.setState({inputImage: value})} />
+              <Input disabled placeholder="DateImage" type="file" value={this.item.image} onChangeText={(value) => this.setState({inputImage: value})} />
             </Item>
           </Form>
   { this.item.image &&
@@ -139,7 +150,7 @@ export default class ContactCreate extends Component {
        
   <Fab
     style={{ backgroundColor: 'red' }}
-    onPress={this.handlePhoto}>
+    onPress={() => this.props.navigation.navigate('Cam', this.item)}>
     <Icon name="ios-camera" />
   </Fab>
       </Container>
@@ -149,7 +160,7 @@ export default class ContactCreate extends Component {
 const styles = StyleSheet.create({
   container: {
     margin: 4, borderRadius: 8,
-    padding: 20
+    padding: 20, backgroundColor: '#e3f2fd'
   },
   local: {
     fontSize: 8,

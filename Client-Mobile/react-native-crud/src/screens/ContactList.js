@@ -30,7 +30,8 @@ export default class ContactList extends React.Component {
     })
     axios({
       method: 'get',
-      url: 'http://200.131.36.177:8080/tasks'
+      // url: 'http://200.131.36.177:8080/tasks'
+     url: 'http://192.168.0.6:8080/tasks'
     })
       .then(res => {
         this.setState({
@@ -52,7 +53,8 @@ export default class ContactList extends React.Component {
   handleDelete = (id) => () => {
     axios({
       method: 'delete',
-      url: `http://200.131.36.177:8080/tasks/${id}`
+     // url: `http://200.131.36.177:8080/tasks/${id}`
+     url: 'http://192.168.0.6:8080/tasks'
     })
       .then(res => {
         this.getData();
@@ -64,7 +66,7 @@ export default class ContactList extends React.Component {
 
   renderItem = ({ item, index }) => (
     <ListItem style={ styles.list }
-      onLongPress={this.handleDelete(item.id)}
+      // onLongPress={this.handleDelete(item.id)}
       onPress={() => this.props.navigation.navigate('ContactCreate', {item})}
     >
       <Content style={ styles.textContent }>

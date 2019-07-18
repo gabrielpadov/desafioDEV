@@ -16,8 +16,6 @@ export default class CameraPage extends React.Component {
         const cameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         const hasCameraPermission = (camera.status === 'granted' &&
              cameraRoll.status === 'granted');
-            // console.log(cameraRoll.status);
-            // console.log(camera.status);
         this.setState({ hasCameraPermission });
     };
 	camera = null;
