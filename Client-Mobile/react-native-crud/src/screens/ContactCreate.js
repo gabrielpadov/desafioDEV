@@ -1,25 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Form, Item, Fab } from 'native-base';
-import { Icon, Input, Content, Button, TextInput, Text } from 'native-base';
+import { Icon, Input, Content, Button } from 'native-base';
 import axios from 'axios';
-import {Permissions, Location} from 'expo';
 import { StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import { Camera, Location, Permissions } from 'expo';
+import Toolbar from './Toolbar';
+import StylesCam from './styles';
 
 export default class ContactCreate extends Component {
 
   constructor(props) {
     super(props);
     this.item = null;
-	this.photo = null;
-   
     if (props.navigation.state.params && props.navigation.state.params.item) {
       this.item = props.navigation.state.params.item;
-	console.log('1'+this.item);
     }
-    if (props.navigation.state.params && props.navigation.state.params.photo) {
-      this.photo = props.navigation.state.params.photo;
-	console.log('2'+this.photo);
-    }
+    
     this.state = {
       inputName: this.item && this.item.name ? this.item.name : '',
       inputDescription: this.item && this.item.description ? this.item.description: '',
@@ -37,27 +34,39 @@ export default class ContactCreate extends Component {
       hasLocationPermissions: false,
       cameraCapture: false
     }
-	console.log('3'+this.photo);
-	console.log('4'+JSON.stringify(this.item.photo));
-	
-	// this.item.image=this.photo;
-  }
+ }
+
+camera=null;
+ state = {
+    	hasCameraPermission: null,
+	//type: Camera.Constants.Type.back,
+ 	captures: [],
+        // setting flash to be turned off by default
+        flashMode: Camera.Constants.FlashMode.off,
+        capturing: null,
+        // start the back camera by default
+        cameraType: Camera.Constants.Type.back,
+        hasCameraPermission: null,
+  };
 
   componentDidMount() {
-    this.getLocationAsync();
-  }
-
-  getLocationAsync = async () => {
-    let gpsServiceStatus = await Location.getProviderStatusAsync()
-      if (gpsServiceStatus.locationServicesEnabled) {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-          if (status !== 'granted') {
-            this.setState({
-              locationResult: 'Permission to access location was denied',
-            });
-          }else {
-            this.setState({ hasLocationPermissions: true });
-          }
+	this.checkMultiPermissions();
+  
+}
+async checkMultiPermissions() {
+  const { Permissions } = Expo;
+  const { status, expires, permissions } = await Permissions.getAsync(Permissions.CAMERA, Permissions.LOCATION)
+  if (status !== 'granted') {
+    alert('Hey! You heve not enabled selected permissions');
+  }else{
+	this.getLocationAsync();	
+}
+}
+  getLocationAsync= async()=> {
+    //let gpsServiceStatus = Location.getProviderStatusAsync()
+     // if (gpsServiceStatus.locationServicesEnabled) {
+      // 
+       //     this.setState({ hasLocationPermissions: true });
 
       let location = await Location.getCurrentPositionAsync({});
       this.setState({ locationResult: JSON.stringify(location.coords),
@@ -66,16 +75,45 @@ export default class ContactCreate extends Component {
         let address = await Location.reverseGeocodeAsync(location.coords);
           // console.log(address);
       this.setState({place: JSON.stringify(address)});
-    }else
-      alert('Location services are disable: GPS')
+    //}else
+    //  alert('Location services are disable: GPS')
     }
 
-  handlePhoto = () => {
-    this.setState({
-      cameraCapture: true
-    })
-  }
+  handlePhoto = async () => {this.setState({cameraCapture: true })}
+handlePhotoOff = async () => {this.setState({cameraCapture: false })}
+    setFlashMode = (flashMode) => this.setState({ flashMode });
+    setCameraType = (cameraType) => this.setState({ cameraType });
+    handleCaptureIn = () => {this.setState({ capturing: true });}
 
+    handleCaptureOut = () => {
+        //console.log(this.state.captures);
+        if (this.state.capturing)
+            this.camera.stopRecording();
+    };
+
+    handleShortCapture = async () => {
+	 
+        const photoData = await this.camera.takePictureAsync();
+        this.setState({ capturing: false, captures: photoData })
+        // console.log(photoData);
+	this.item.image = photoData.uri;
+	console.log(this.item);
+this.handlePhotoOff();
+/*
+            const formData = new FormData();
+            formData.append("file",photoData.uri);
+           
+            axios.post('http://200.131.36.177:8000/upload', 'file',
+              formData)
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });*/
+	this.props.navigation.navigate('ContactCreate', this.item);
+	
+}
   handleSubmit = () => {
     if (this.item && this.item.name) {
       axios({
@@ -111,11 +149,19 @@ export default class ContactCreate extends Component {
   }
 
   render() {
+const { hasCameraPermission, flashMode, cameraType, capturing } = this.state;
+    if (hasCameraPermission === null) {
+      return <View />;
+    } else if (hasCameraPermission === false) {
+      return <Text>No access to camera</Text>;
+    } else {
+
     return (
       <Container style={styles.container}>
 
-  { !this.state.cameraCapture && <Content>
-        <Icon name="ios-notifications" size={20} style={{ color: this.state.level , margin: 20 }}/>
+  { !this.state.cameraCapture && 
+<Content>
+        <Icon name="ios-notifications" size={20} style={{ color: this.state.inputLevel , margin: 20 }}/>
           <Form>
             <Item>
               <Input disabled placeholder="DataStart" value={this.state.inputDateStart} onChangeText={(value) => this.setState({inputDateStart: value})} />
@@ -146,20 +192,45 @@ export default class ContactCreate extends Component {
     </Button>
     </Fragment>}
   </Content>
-  }
-       
+}
+  
+     
   <Fab
     style={{ backgroundColor: 'red' }}
-    onPress={() => this.props.navigation.navigate('Cam', this.item)}>
+    onPress={() => {this.handlePhoto()}}>
     <Icon name="ios-camera" />
   </Fab>
+
+
+{this.state.cameraCapture &&
+<Fragment>
+	
+          <Camera
+                        Type={cameraType}
+                        flashMode={flashMode}
+                        style={StylesCam.preview}
+                        ref={camera => this.camera = camera}
+                    />
+                
+                 <Toolbar 
+                    capturing={capturing}
+                    flashMode={flashMode}
+                    cameraType={cameraType}
+                    setFlashMode={this.setFlashMode}
+                    setCameraType={this.setCameraType}
+                    onCaptureIn={this.handleCaptureIn}
+                    onCaptureOut={this.handleCaptureOut}
+                    onShortCapture={this.handleShortCapture}
+                />
+      
+</Fragment>}
       </Container>
     )
-  }
+  }}
 }
 const styles = StyleSheet.create({
   container: {
-    margin: 4, borderRadius: 8,
+    margin: 3, borderRadius: 8,
     padding: 20, backgroundColor: '#e3f2fd'
   },
   local: {

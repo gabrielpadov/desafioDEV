@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: '#e0e0e0',
     margin: 4, borderRadius: 8,
-    padding: 20
+    padding: 15
   },
   textContent: {
     padding: 4,
