@@ -9,11 +9,11 @@ import Toolbar from './Toolbar';
 import StylesCam from './styles';
 
 // host servidor API Spring
-const host = 'http://192.168.0.6:8080/tasks/';
-//const host = 'http://200.131.36.177:8080/tasks/';
+//const host = 'http://192.168.0.6:8080/tasks/';
+const host = 'http://200.131.36.177:8080/tasks/';
 // host API servidor upload imagens
-const hostSendUpload = 'http://192.168.0.6:8000/upload';
-//const hostSendUpload = 'http://200.131.36.177:8000/upload';
+//const hostSendUpload = 'http://192.168.0.6:8000/upload';
+const hostSendUpload = 'http://200.131.36.177:8000/api/upload';
 const hostUpload = 'http://localhost:8000/'
 
 export default class ContactCreate extends Component {

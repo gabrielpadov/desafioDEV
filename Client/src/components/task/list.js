@@ -154,7 +154,7 @@ onDone(task,e) {
         {this.props.tasks.map((task) => {
               return (
               // eslint-disable-next-line no-unused-expressions
-              <CollapsibleItem key={task.id} header={task.date_start +': '+ task.name} style={{'textDecoration': this.onLineThrough(task.status)}}
+              <CollapsibleItem key={task.id} header={task.date_start +': '+ task.name} style={{'textDecoration': this.onLineThrough(task.status), backgroundColor:task.image}}
               icon="notification_important" iconClassName={task.level} 
                 >   
               <Row>
@@ -170,11 +170,13 @@ onDone(task,e) {
                 <Col m={2} s={2}>
                   <Chip className={this.onStatus(task.status)}>{task.status}</Chip>
                 </Col>
-                
-              <div className="center">
-                <img style={{marginBottom: '20px'}} src={this.onImage(task.image)} className="img-responsive" alt={task.name}/>
-                    <br/><li>{task.image}</li>
-                
+                <div className="center">
+             { !task.image && 
+                <img style={{marginBottom: '20px'}} src={noimage} className="img-responsive" alt={task.name}/>
+              }
+              { task.image && 
+                <img style={{marginBottom: '20px'}} src={'http://localhost:8000/images/7257e3b5-1099-4b8b-9d18-f59ec1e2be3c.jpg'} className="img-responsive" alt={task.name}/>
+              }  
                 <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onReject(task,e)} >Reject</Button>
                 <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onDone(task,e)}>Done</Button>
                 <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onDelete(task.id,e)} >Delete</Button>
