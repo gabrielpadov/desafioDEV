@@ -173,7 +173,7 @@ onDone(task,e) {
                 
               <div className="center">
                 <img style={{marginBottom: '20px'}} src={this.onImage(task.image)} className="img-responsive" alt={task.name}/>
-                    <br/>
+                    <br/><li>{task.image}</li>
                 
                 <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onReject(task,e)} >Reject</Button>
                 <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onDone(task,e)}>Done</Button>

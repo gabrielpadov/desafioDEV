@@ -9,11 +9,12 @@ import Toolbar from './Toolbar';
 import StylesCam from './styles';
 
 // host servidor API Spring
-// const host = 'http://192.168.0.5:8080/tasks/';
-const host = 'http://200.131.36.177:8080/tasks/';
+const host = 'http://192.168.0.6:8080/tasks/';
+//const host = 'http://200.131.36.177:8080/tasks/';
 // host API servidor upload imagens
-const hostSendUpload = 'http://200.131.36.177:8000/upload';
-const hostUpload = 'http://localhost:8000/uploads/'
+const hostSendUpload = 'http://192.168.0.6:8000/upload';
+//const hostSendUpload = 'http://200.131.36.177:8000/upload';
+const hostUpload = 'http://localhost:8000/'
 
 export default class ContactCreate extends Component {
 
@@ -39,21 +40,22 @@ export default class ContactCreate extends Component {
       locationResult: null,
       local: null,
       hasLocationPermissions: false,
-      cameraCapture: false
+      cameraCapture: false,
+      addressImage: null
     }
  }
 
 camera=null;
  state = {
-    	hasCameraPermission: null,
-	//type: Camera.Constants.Type.back,
- 	captures: [],
-        // setting flash to be turned off by default
-        flashMode: Camera.Constants.FlashMode.off,
-        capturing: null,
-        // start the back camera by default
-        cameraType: Camera.Constants.Type.back,
-        //hasCameraPermission: null,
+    hasCameraPermission: null,
+	   //type: Camera.Constants.Type.back,
+ 	  captures: [],
+    // setting flash to be turned off by default
+    flashMode: Camera.Constants.FlashMode.off,
+    capturing: null,
+    // start the back camera by default
+    cameraType: Camera.Constants.Type.back,
+    //hasCameraPermission: null,
   };
 
   async componentDidMount() {
@@ -84,12 +86,8 @@ camera=null;
   handleCancel = () => {this.setState({ inputImage: null, inputLocate: null});this.item.image=null;}
   handleCaptureOut = () => {if (this.state.capturing) this.camera.stopRecording();};
   handleShortCapture = async () => {
-    const photoData = await this.camera.takePictureAsync();
-    this.setState({ capturing: false, captures: photoData })
-    this.item.image = photoData.uri;
-    // console.log(this.item);
-    // console.log(photoData.uri);
-    this.setState({inputImage: this.item.image});
+    const photoData = await this.camera.takePictureAsync({quality: 0.2});
+    this.setState({ capturing: false, captures: photoData, inputImage: photoData.uri })
     this.handlePhotoOff();
   }
 
@@ -105,10 +103,20 @@ camera=null;
     )
   }
   
-  Submit = () => {
-    console.log(this.item);
-    console.log(`${hostUpload}photo${this.item.id}.jpg`);
+  Submit = () => {    
     if (this.item && this.item.name) {
+      const a='';
+      fetch(hostSendUpload, {
+        method: "POST",
+        body: this.createFormData(this.state.captures, { userId: "123" })
+        })
+          .then(response => response.json())
+          .then(response => {
+            console.log("upload success", response.name[0].path);
+           // a = {path: response.name[0].path};
+           // console.log(a)
+        
+
       axios({
         method: 'put',
         url: host+`${this.item.id}`,
@@ -117,30 +125,23 @@ camera=null;
             description: this.item.description,
             level: this.item.level,
             details: null,
-            image: `${hostUpload}photo${this.item.id}.jpg`,
+            image: `${hostUpload}`+response.name[0].path,
             locate: this.state.place,
             date_start: this.item.date_start,
             date_end: new Date(),
             status: this.item.status
         }
       })
-       
-      fetch(hostSendUpload, {
-        method: "POST",
-        body: this.createFormData(this.state.captures, { userId: "123" })
-        })
-          .then(response => response.json())
-          .then(response => {
-            console.log("upload succes", response);
+        .then(response => {
             alert("Upload success!");
-            this.setState({ captures: null });
+            this.setState({ captures: null});
             this.props.navigation.goBack();
           })
           .catch(error => {
             console.log("upload error", error);
             alert("Upload failed!");
           });  
-
+});
       }else {
       axios({
         method: 'post',
@@ -173,7 +174,7 @@ camera=null;
     Object.keys(body).forEach(key => {
       data.append(key, body[key]);
     });
-    console.log(data);
+   // console.log(data);
     return data;
   };
 
@@ -189,28 +190,24 @@ const { hasCameraPermission, flashMode, cameraType, capturing } = this.state;
       <Container style={styles.container}>
 
   { !this.state.cameraCapture && 
-<Content>
+  
+  <Content > 
   <Icon name="ios-notifications" size={20} style={{ color: this.state.inputLevel , margin: 20 }}/>
-  <Form>
+    <Form>
     <Item>
       <Input disabled placeholder="DataStart" value={this.state.inputDateStart} onChangeText={(value) => this.setState({inputDateStart: value})} />
     </Item>
-    <Item>
-      <Input disabled placeholder="Name" value={this.state.inputName} onChangeText={(value) => this.setState({inputName: value})} />
-    </Item>
-    <Item>
-      <Input disabled placeholder="Description" value={this.state.inputDescription} onChangeText={(value) => this.setState({inputDescription: value})} />
-    </Item>
-    <Item >
-      <Text>Local: </Text><Text style={styles.local}> {this.state.place} </Text>
-    </Item>
-    <Item last>
+      <Text style={styles.titleText}>{this.state.inputName}</Text>
+      <Text style={styles.dateText}>{this.state.inputDescription}</Text>
+      <Text>Local: </Text>
+      <Text>{this.state.place}</Text> 
+    <Item>  
       <Text>Image: </Text> 
       <Input disabled placeholder="DateImage" name="image" id="image" type="file" value={this.state.inputImage} onChangeText={(value) => this.setState({inputImage: value})} />
     </Item>
   </Form>
-          
-{ this.item.image &&
+         
+{ this.state.captures &&
   <Fragment>      
     <Button block style={{backgroundColor: 'green', margin: 5}} 
       onPress={this.handleSubmit}>
@@ -225,12 +222,14 @@ const { hasCameraPermission, flashMode, cameraType, capturing } = this.state;
   </Fragment>
 </Content>
 }
-  
+
+{ !this.state.cameraCapture &&   
   <Fab
     style={{ backgroundColor: 'red' }}
     onPress={() => {this.handlePhoto()}}>
     <Icon name="ios-camera" />
   </Fab>
+}
 
 {this.state.cameraCapture &&
   <Fragment>
@@ -264,4 +263,12 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: 'bold'
   },
+  dateText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  titleText:{
+    fontSize: 20,
+    fontWeight: 'bold'
+  }
 });
