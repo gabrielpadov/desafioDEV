@@ -2,6 +2,13 @@ import React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { Container, Content, List, ListItem, Text, Icon } from 'native-base';
 import axios from 'axios';
+import TimerMixin from 'react-timer-mixin';
+
+mixins: [TimerMixin];
+
+
+// const host = 'http://192.168.0.5:8080/tasks';
+const host = 'http://200.131.36.177:8080/tasks';
 
 export default class ContactList extends React.Component {
 
@@ -19,9 +26,15 @@ export default class ContactList extends React.Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
   }
-
+  
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   componentDidMount() {
     this.getData();
+    this.interval = setInterval(() => {
+      this.getData();//console.log('atualiza');
+    }, 10000); //6 seconds
   }
 
   getData = () => {
@@ -30,13 +43,12 @@ export default class ContactList extends React.Component {
     })
     axios({
       method: 'get',
-      // url: 'http://200.131.36.177:8080/tasks'
-     url: 'http://192.168.0.6:8080/tasks'
+     url: host
     })
       .then(res => {
         this.setState({
           data: res.data.sort((a,b)=> new Date(b.date_start) - new Date(a.date_start))
-          .filter(task => task.status.toLowerCase() === "active"),
+          .filter(task => task.status.toLowerCase() === "active" && task.image == null),
           isLoading: false
         })
       })
@@ -53,8 +65,7 @@ export default class ContactList extends React.Component {
   handleDelete = (id) => () => {
     axios({
       method: 'delete',
-     // url: `http://200.131.36.177:8080/tasks/${id}`
-     url: 'http://192.168.0.6:8080/tasks'
+     url: host+id
     })
       .then(res => {
         this.getData();
@@ -78,22 +89,22 @@ export default class ContactList extends React.Component {
     </ListItem>
   )
 
-  render() {
-    return (
-      <Container>
-        <Content>
-          <List>
-            <FlatList
-              data={this.state.data}
-              keyExtractor={this._keyExtractor}
-              renderItem={this.renderItem}
-              refreshing={this.state.isLoading}
-              onRefresh={this.getData}
-            />
-          </List>
-        </Content>
-      </Container>
-    );
+render() {
+  return (
+    <Container>
+      <Content>
+        <List>
+          <FlatList
+            data={this.state.data}
+            keyExtractor={this._keyExtractor}
+            renderItem={this.renderItem}
+            refreshing={this.state.isLoading}
+            onRefresh={this.getData}
+          />
+        </List>
+      </Content>
+    </Container>
+  );
   }
 }
 
