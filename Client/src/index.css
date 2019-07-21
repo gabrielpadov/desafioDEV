@@ -2,10 +2,10 @@
 
 body {
 
-  background-color: #eee;
+  background-color: #fff;
     font-family: 'Roboto';
-   
   }
+
   
   form {
     
@@ -23,7 +23,7 @@ body {
   li:not(:last-child) {
     margin-bottom: 5px;
   }
-  
+  span {color:#000; margin: 5px;}
   label {
     display: flex;
     align-items: center;
@@ -57,3 +57,4 @@ body {
   .submit-button:active {
     transform: translateY(1px);
   }
+

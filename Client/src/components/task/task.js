@@ -80,8 +80,8 @@ class Tasks extends React.Component {
       })
   }
 
-  onAddTaskRefreshListClick(e){
-    e.preventDefault();
+  onAddTaskRefreshListClick( ){
+   // e.preventDefault();
     this.loadTasks();
   }
 
@@ -104,20 +104,13 @@ render() {
   return (
   <Row>
      <Col m={12} s={12}>
-    <Button waves="light" href="#addTask" className="blue modal-trigger">
-      Task
-      <Icon medium left>add_circle</Icon>
-    </Button>
-
+    
     <Modal id="addTask" header="Task">
     
     <AddTask onAddTaskRefreshList={this.onAddTaskRefreshListClick.bind(this)} /> 
         
     </Modal>
-    </Col>
-
-    <Col m={5} s={12} style={{marginTop: '5px'}}>
-     <br />
+    
       <div className="center">
         <Chip className="grey-darken-2-text red">Priority</Chip>
         <Chip className="grey-darken-2-text yellow">Emergency</Chip>
@@ -125,12 +118,14 @@ render() {
        </div>
     </Col>
   
-      <Col m={7} s={12}>
+      <Col m={12} s={12}>
       
       <label>What needs to be done?</label>
         <input type="text" label="Task" id="fname" onChange={this.onChangeInput} />
         <h4>To Do</h4>
         <div className="center">
+          <Button waves="light" href="#addTask" className="blue modal-trigger" style={{margin: '5px'}}>
+            Task<Icon medium left>add_circle</Icon></Button>
           <Button waves="light" node="a" style={{margin: '2px'}} onClick={this.onRecentsTask}>Recents</Button>
           <Button waves="light" node="a" style={{margin: '2px'}} onClick={this.onOldsTask}>Olds</Button>
           <Button waves="light" node="a" style={{margin: '2px'}} onClick={this.onActivesTask}>Actives</Button>

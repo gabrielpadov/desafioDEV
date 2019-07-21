@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Collapsible, CollapsibleItem, Row, Col, Chip, Button, } from 'react-materialize';
+import {Collapsible, CollapsibleItem, Row, Col, Chip, Button} from 'react-materialize';
 import noimage from "../../images/noimage.png";
 import axios from 'axios'; 
 
@@ -13,44 +13,6 @@ class List extends Component {
     //this.onRefreshCollapsibleItem = this.onRefreshCollapsibleItem.bind(this);
     this.onRejectRefresh = this.onRejectRefresh.bind(this);
   }
-
-/**
- * funções auxiliares
- */
-onStatus(status) {
-  if(status==='Done'){
-    return 'grey';
-  }
-  return 'blue';
-}
-
-onLineThrough(status) {
-  if(status==='Done'){
-    return 'line-through';
-  }
-  return 'none';
-}
-
-onImage(image) {
-  if(image == null){
-    return noimage;
-  }
-  return image;
-}
-
-onDateFormat(date){
-  if(date == null){
-    return null;
-  }
-  return date;
-}
-
-onStatusButton(status){
-  if(status==='Done'){
-    return true;
-  }
-return false;
-}
 
 onDoneRefresh(e){
   e.preventDefault();
@@ -134,61 +96,54 @@ onDone(task,e) {
   }
   
   const url = 'http://localhost:8080/tasks/' + task.id;
-  axios.put(url, data, httpReqHeaders )
-       .then(function (response) {
-          //handle success
-            console.log(response.date)
-           
-        }).catch(error => {
-            console.log(error) 
-        });       
-        this.onDoneRefresh(e); 
+  axios.put(url, data, httpReqHeaders)
+   .then(function (response) {
+      //handle success
+        console.log(response.date)
+       
+    }).catch(error => {
+        console.log(error) 
+    });       
+    this.onDoneRefresh(e); 
 }
 
-     render() {
-       return (
-        <div>
-        
-        <Collapsible accordion={true}>
-          
-        {this.props.tasks.map((task) => {
-              return (
-              // eslint-disable-next-line no-unused-expressions
-              <CollapsibleItem key={task.id} header={task.date_start +': '+ task.name} style={{'textDecoration': this.onLineThrough(task.status), backgroundColor:task.image}}
-              icon="notification_important" iconClassName={task.level} 
-                >   
-              <Row>
-              <Col m={12} s={12}>
+ render() {
+   return (
+    <div>
     
-                <Col m={10} s={10}>
-                  <label className="title">Begin: </label><span> {this.onDateFormat(task.date_start)}</span><br />
-                  <label className="title">End: </label><span>{this.onDateFormat(task.date_end)}</span><br />
-                  <label className="title">Description: </label><span>{task.description}</span><br />
-                  <label className="title">Localization: </label><span>{task.locate}</span>
-                </Col>
-                
-                <Col m={2} s={2}>
-                  <Chip className={this.onStatus(task.status)}>{task.status}</Chip>
-                </Col>
-                <div className="center">
-             { !task.image && 
-                <img style={{marginBottom: '20px'}} src={noimage} className="img-responsive" alt={task.name}/>
-              }
-              { task.image && 
-                <img style={{marginBottom: '20px'}} src={'http://localhost:8000/images/7257e3b5-1099-4b8b-9d18-f59ec1e2be3c.jpg'} className="img-responsive" alt={task.name}/>
-              }  
-                <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onReject(task,e)} >Reject</Button>
-                <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onDone(task,e)}>Done</Button>
-                <Button waves="light" disabled={this.onStatusButton(task.status)} node="a" style={{margin: '2px'}} onClick={(e) => this.onDelete(task.id,e)} >Delete</Button>
-                
-                </div>
-              </Col>
-              </Row>
-      </CollapsibleItem>
-         ) })}
-    </Collapsible></div>
-             );
-     }
-   }
+    <Collapsible accordion={true} style={{backgroundColor: '#e3f2fd'}}>
+      
+    {this.props.tasks.map((task) => {
+          return (
+          // eslint-disable-next-line no-unused-expressions
+          <CollapsibleItem key={task.id} header={task.name}  style={{'textDecoration': task.status==='Done'?'line-through':'' }}
+          icon={task.status === "Done"?"check":task.image?"notification_important":"access_time" } iconClassName={task.level} >   
+          <Col className="right">
+              <Chip className={task.status==='Done'?'grey':'blue'}>{task.status}</Chip>
+            </Col>
+            
+          <Row>
+            <Col l={6} xl={6} m={6} s={12}>
+              <label className="title">Begin: <span> {task.date_start}</span></label>
+              <label className="title">End: <span>{task.date_end}</span></label>
+              <label className="title">Description: <span>{task.description}</span></label>
+              <label className="title">Localization: <span>{task.locate}</span></label>
+            </Col>
+       
+          <Col l={6} xl={6} m={6} s={12}>
+            { task.image &&
+              <img style={{marginTop: '20px', marginBottom:'20px'}} src={task.image?task.image:null} className="img-responsive" alt={task.name} width="310" height="410"/>      
+            }
+            <Button waves="light" disabled={task.image?task.status === 'Done'?true:false:true} node="a" style={{margin: '2px'}} onClick={(e) => this.onReject(task,e)} >Reject</Button>
+            <Button waves="light" disabled={task.image?task.status === 'Done'?true:false:true} node="a" style={{margin: '2px'}} onClick={(e) => this.onDone(task,e)}>Done</Button>
+            <Button waves="light" disabled={task.status === 'Done'?true:false} style={{margin: '2px'}} onClick={(e) => this.onDelete(task.id,e)} >Delete</Button>
+          </Col>
+          </Row>
+  </CollapsibleItem>
+     ) })}
+</Collapsible></div>
+         );
+ }
+}
 
 export default List;

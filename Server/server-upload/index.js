@@ -1,3 +1,4 @@
+
 const Express = require('express')
 const multer = require('multer')
 const bodyParser = require('body-parser')
@@ -10,22 +11,23 @@ const Storage = multer.diskStorage({
     callback(null, './images')
   },
   filename(req, file, callback) {
-    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
-    // callback(null, `${file.originalname}`)
+    //callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
+    callback(null, `${file.originalname}`)
   },
 })
-app.use(Express.static('assets'));
+
+app.use('/images', Express.static('images'));
 const upload = multer({ storage: Storage })
 
-app.get('/', (req, res) => {
- // res.set("Content-Security-Policy", "img-src 'self' https://apis.google.com");
-  //res.set('Content-Type', 'jpeg');
+app.get('*', (req, res) => {
+  res.set("Content-Security-Policy", "img-src 'self' https://apis.google.com");
+  res.type('jpeg');
   res.status(200).send('You can post to /api/upload.')
 })
 
 app.post('/api/upload', upload.array('photo', 3), (req, res) => {
-//console.log('file', req.files)
- // console.log('body', req.body)
+console.log('file', req.files)
+console.log('body', req.body)
   res.status(200).json({
      message: 'success!', name: req.files
   })
