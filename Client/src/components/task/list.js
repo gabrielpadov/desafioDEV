@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {Collapsible, CollapsibleItem, Row, Col, Chip, Button} from 'react-materialize';
-import noimage from "../../images/noimage.png";
 import axios from 'axios'; 
 
 class List extends Component {
   
   constructor(props) {
     super(props);
-    this.onDelete = this.onDelete.bind(this);
+   // this.onDelete = this.onDelete.bind(this);
     this.onReject = this.onReject.bind(this);
     this.onDone = this.onDone.bind(this);
     //this.onRefreshCollapsibleItem = this.onRefreshCollapsibleItem.bind(this);
@@ -25,7 +24,7 @@ onRejectRefresh(e){
 }
 
 onDeleteRefresh(e){
-  e.preventDefault();
+  //e.preventDefault();
   this.props.onDeleteRefreshList(e);
 }
 
@@ -132,7 +131,7 @@ onDone(task,e) {
        
           <Col l={6} xl={6} m={6} s={12}>
             { task.image &&
-              <img style={{marginTop: '20px', marginBottom:'20px'}} src={task.image?task.image:null} className="img-responsive" alt={task.name} width="310" height="410"/>      
+              <img style={{marginTop: '20px', marginBottom:'20px'}} src={task.image} className="img-responsive" alt={task.name} width="310" height="410"/>      
             }
             <Button waves="light" disabled={task.image?task.status === 'Done'?true:false:true} node="a" style={{margin: '2px'}} onClick={(e) => this.onReject(task,e)} >Reject</Button>
             <Button waves="light" disabled={task.image?task.status === 'Done'?true:false:true} node="a" style={{margin: '2px'}} onClick={(e) => this.onDone(task,e)}>Done</Button>

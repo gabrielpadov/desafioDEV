@@ -11,8 +11,8 @@ export default class AddTask extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onSubmitAdd = this.onSubmitAdd.bind(this);
       this.state = {
-          name: '',
-          description: '',
+          name: null,
+          description: null,
           level: 'green',
           date_start: new Date(),
           status: 'Active'
@@ -36,9 +36,9 @@ export default class AddTask extends Component {
           })
         }
 
-      onSubmitAdd(){
-        //e.preventDefault();
-        this.props.onAddTaskRefreshList();
+      onSubmitAdd(e){
+        e.preventDefault();
+        this.props.onAddTaskRefreshList(e);
       }
       
       onSubmit(e) {
@@ -60,7 +60,7 @@ export default class AddTask extends Component {
         }).catch(error => {
             console.log(error) 
         });      
-        this.onSubmitAdd();
+        this.onSubmitAdd(e);
           
           this.setState({
             name: '',
@@ -127,9 +127,10 @@ return (
               </li>
             </ul>
         </div>
+        {this.state.name && this.state.description &&
         <div style={{marginTop: '5px'}} className="form-group">
             <input type="submit" value="Submit" className="btn btn-primary blue darken-2"  />
-        </div>
+        </div>}
     </form>
 </div>)}
 }

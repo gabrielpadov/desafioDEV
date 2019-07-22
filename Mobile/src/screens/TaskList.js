@@ -7,7 +7,7 @@ import TimerMixin from 'react-timer-mixin';
 mixins: [TimerMixin];
 
 
-const host = 'http://192.168.0.104:8080/tasks';
+const host = 'http://192.168.0.4:8080/tasks';
 //const host = 'http://200.131.36.177:8080/tasks';
 
 export default class TaskList extends React.Component {

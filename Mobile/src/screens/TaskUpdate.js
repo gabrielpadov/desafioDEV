@@ -9,10 +9,10 @@ import Toolbar from './Toolbar';
 import StylesCam from './styles';
 
 // host servidor API Spring
-const host = 'http://192.168.0.104:8080/tasks/';
+const host = 'http://192.168.0.4:8080/tasks/';
 //const host = 'http://200.131.36.177:8080/tasks/';
 // host API servidor upload imagens
-const hostSendUpload = 'http://192.168.0.104:8000/api/upload';
+const hostSendUpload = 'http://192.168.0.4:8000/api/upload';
 //const hostSendUpload = 'http://200.131.36.177:8000/api/upload';
 const hostUpload = 'http://localhost:8000/'
 
@@ -80,6 +80,13 @@ camera=null;
       this.setState({place: str});
   }
 
+handleShortCapture = async () => {
+    const photoData = await this.camera.takePictureAsync({quality: 0.2});
+    this.setState({ capturing: false, captures: photoData, inputImage: photoData.uri })
+    console.log(photoData)
+    this.handlePhotoOff();
+  }
+  
   handlePhoto = async () => {this.setState({cameraCapture: true })}
   handlePhotoOff = async () => {this.setState({cameraCapture: false })}
   setFlashMode = (flashMode) => this.setState({ flashMode });
@@ -87,13 +94,6 @@ camera=null;
   handleCaptureIn = () => {this.setState({ capturing: true });}
   handleCancel = () => {this.setState({ inputImage: null, captures: null, inputLocate: null});this.item.image=null;}
   handleCaptureOut = () => {if (this.state.capturing) this.camera.stopRecording();};
-  
-  handleShortCapture = async () => {
-    const photoData = await this.camera.takePictureAsync({quality: 0.2});
-    this.setState({ capturing: false, captures: photoData, inputImage: photoData.uri })
-    console.log(photoData)
-    this.handlePhotoOff();
-  }
 
   handleSubmit = () => {
     Alert.alert(

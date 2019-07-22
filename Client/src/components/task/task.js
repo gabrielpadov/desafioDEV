@@ -27,7 +27,7 @@ class Tasks extends React.Component {
     this.onChangeInput = this.onChangeInput.bind(this);
   }
 
-  async loadTasks() {
+async loadTasks() {
     const url = `${API_URL}/tasks/`;
     
      axios.get(url).then(response => {
@@ -80,8 +80,8 @@ class Tasks extends React.Component {
       })
   }
 
-  onAddTaskRefreshListClick( ){
-   // e.preventDefault();
+  onAddTaskRefreshListClick(e){
+    e.preventDefault();
     this.loadTasks();
   }
 
@@ -90,10 +90,10 @@ class Tasks extends React.Component {
     this.onActivesTask(e)
   } 
 
-  onDeleteRefreshListClick(e){
-    e.preventDefault();
-    this.onRecentsTask(e)
-  } 
+  onDeleteRefreshListClick(e,id){
+   e.preventDefault();
+    this.loadTasks();
+   } 
 
   onDoneRefreshListClick(e){
     e.preventDefault();
@@ -105,7 +105,7 @@ render() {
   <Row>
      <Col m={12} s={12}>
     
-    <Modal id="addTask" header="Task">
+    <Modal id="addTask" header="Task" >
     
     <AddTask onAddTaskRefreshList={this.onAddTaskRefreshListClick.bind(this)} /> 
         
@@ -124,7 +124,7 @@ render() {
         <input type="text" label="Task" id="fname" onChange={this.onChangeInput} />
         <h4>To Do</h4>
         <div className="center">
-          <Button waves="light" href="#addTask" className="blue modal-trigger" style={{margin: '5px'}}>
+          <Button waves="light" href="#addTask" className="blue modal-trigger" style={{margin: '5px'}} >
             Task<Icon medium left>add_circle</Icon></Button>
           <Button waves="light" node="a" style={{margin: '2px'}} onClick={this.onRecentsTask}>Recents</Button>
           <Button waves="light" node="a" style={{margin: '2px'}} onClick={this.onOldsTask}>Olds</Button>
